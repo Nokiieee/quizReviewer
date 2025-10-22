@@ -1,0 +1,84 @@
+/* Reset some default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body Styling */
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Input Field */
+#input {
+    padding: 12px 20px;
+    border: 2px solid #ffffffaa;
+    border-radius: 8px;
+    outline: none;
+    font-size: 16px;
+    width: 300px;
+    transition: 0.3s ease;
+    margin-bottom: 15px;
+}
+
+#input:focus {
+    border-color: #fff;
+    background-color: #ffffffcc;
+}
+
+/* Buttons Styling */
+button {
+    padding: 12px 24px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ffffffcc;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #fff;
+    transform: scale(1.05);
+}
+
+/* Reviewer Display */
+#reviewer {
+    margin-top: 40px;
+    font-size: 32px;
+    color: white;
+    text-align: center;
+    background-color: #00000033;
+    padding: 20px 40px;
+    border-radius: 12px;
+    min-height: 60px;
+    width: 60%;
+    word-wrap: break-word;
+    transition: 0.4s ease;
+}
+
+#reset-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000; /* ensures it's above other content */
+}
+
+#reset-button {
+    background-color: #ffddddcc;
+    color: #900;
+}
+
+#reset-button:hover {
+    background-color: #ffcccc;
+}
