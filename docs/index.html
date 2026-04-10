@@ -16,11 +16,11 @@
 
       <div>
         <div class="input-row">
-          <input type="text" id="input" placeholder="q | q  or  a::q | a::q" />
+          <input type="text" id="input" placeholder="d | d  or  t::d | t::d" />
           <button onclick="insert()">Add</button>
         </div>
         <p class="hint">
-          Separate items with <code>|</code>. Use <code>q::a</code> for
+          Separate items with <code>|</code>. Use <code>t::d</code> for
           question/answer pairs.
         </p>
       </div>
@@ -43,11 +43,11 @@
 
       <div class="controls">
         <button id="start-btn" onclick="startQuiz()">Start</button>
-        <button id="flip-btn" onclick="flipCard()" style="display: none">
-          Flip
-        </button>
         <button id="next-btn" onclick="nextCard()" style="display: none">
           Next
+        </button>
+        <button id="flip-btn" onclick="flipCard()" style="display: none">
+          Flip
         </button>
         <button class="btn-danger" onclick="confirmReset()">Reset</button>
       </div>

@@ -59,6 +59,7 @@ function startQuiz() {
   remaining = [...allItems].sort(() => Math.random() - 0.5);
   total = remaining.length;
   quizStarted = true;
+  document.getElementById("start-btn").style.display = "none";
   document.getElementById("flip-btn").style.display = "";
   document.getElementById("next-btn").style.display = "";
   document.getElementById("progress-wrap").style.display = "";
@@ -109,7 +110,7 @@ function renderCard(item) {
             <div class="flip-scene" onclick="flipCard()">
                 <div class="flip-card" id="flip-card">
                     <div class="card-face front">
-                        <div class="card-label">Answer</div>
+                        <div class="card-label">DEFINITION</div>
                         <div class="card-text">${esc(item.answer)}</div>
                         <div class="card-tip">Click to reveal term</div>
                     </div>
@@ -147,10 +148,13 @@ function showDone() {
         <div class="done-card">
             <div class="done-check">✓</div>
             <div class="done-title">All done!</div>
-            <div class="done-sub">You reviewed all ${total} item${total === 1 ? "" : "s"}. Press Start to go again.</div>
+            <div class="done-sub">You reviewed all ${total} item${total === 1 ? "" : "s"}. Want another go? Press Start Again.</div>
         </div>`;
   document.getElementById("flip-btn").style.display = "none";
   document.getElementById("next-btn").style.display = "none";
+  const startBtn = document.getElementById("start-btn");
+  startBtn.textContent = "Start Again";
+  startBtn.style.display = "";
   quizStarted = false;
 }
 
@@ -167,6 +171,9 @@ function confirmReset() {
     document.getElementById("progress-wrap").style.display = "none";
     document.getElementById("flip-btn").style.display = "none";
     document.getElementById("next-btn").style.display = "none";
+    const startBtn = document.getElementById("start-btn");
+    startBtn.textContent = "Start";
+    startBtn.style.display = "";
     showToast("Reset!");
   }
 }
