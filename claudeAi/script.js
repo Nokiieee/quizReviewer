@@ -109,13 +109,13 @@ function renderCard(item) {
             <div class="flip-scene" onclick="flipCard()">
                 <div class="flip-card" id="flip-card">
                     <div class="card-face front">
-                        <div class="card-label">Question</div>
-                        <div class="card-text">${esc(item.question)}</div>
-                        <div class="card-tip">Click to reveal answer</div>
-                    </div>
-                    <div class="card-face back">
                         <div class="card-label">Answer</div>
                         <div class="card-text">${esc(item.answer)}</div>
+                        <div class="card-tip">Click to reveal term</div>
+                    </div>
+                    <div class="card-face back">
+                        <div class="card-label">Term</div>
+                        <div class="card-text">${esc(item.question)}</div>
                         <div class="card-tip">Press Next for another</div>
                     </div>
                 </div>
@@ -145,7 +145,7 @@ function nextCard() {
 function showDone() {
   document.getElementById("card-area").innerHTML = `
         <div class="done-card">
-            <div class="done-icon">✓</div>
+            <div class="done-check">✓</div>
             <div class="done-title">All done!</div>
             <div class="done-sub">You reviewed all ${total} item${total === 1 ? "" : "s"}. Press Start to go again.</div>
         </div>`;
@@ -178,12 +178,12 @@ function esc(s) {
     .replace(/>/g, "&gt;");
 }
 
-// Keyboard shortcuts
+document.getElementById("input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") insert();
+});
+
 document.addEventListener("keydown", (e) => {
-  if (document.activeElement === document.getElementById("input")) {
-    if (e.key === "Enter") insert();
-    return;
-  }
+  if (document.activeElement === document.getElementById("input")) return;
   if (e.code === "Space") {
     e.preventDefault();
     flipCard();
