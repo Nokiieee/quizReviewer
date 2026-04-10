@@ -311,3 +311,9 @@ button:active {
 .toast.show {
   opacity: 1;
 }
+
+@media (max-width: 480px) {
+  .card-text {
+    font-size: 18px;
+  }
+}
