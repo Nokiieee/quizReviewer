@@ -1,0 +1,312 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Dynalight&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lobster&family=Markazi+Text:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,900;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playball&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Shojumaru&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  min-height: 100vh;
+  background: #f4faff;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  color: #111;
+}
+
+.app {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.title {
+  font-family: "Lobster", "DM Serif Display", serif;
+  font-size: 32px;
+  letter-spacing: 1px;
+  font-weight: 400;
+  color: #111;
+}
+
+.badge {
+  font-size: 12px;
+  color: #999;
+  border: 1px solid #ddd;
+  padding: 3px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.03em;
+}
+
+/* Input */
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.input-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  font-family: "DM Sans", sans-serif;
+  color: #111;
+  background: #fff;
+  transition: 0.2s;
+}
+
+.input-row input:focus {
+  border-color: #111;
+}
+
+.hint {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 5px;
+}
+
+.hint code {
+  background: #f0f0f0;
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: #555;
+  font-family: monospace;
+}
+
+/* Buttons */
+button {
+  padding: 10px 20px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.15s;
+  letter-spacing: 0.01em;
+}
+
+button:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.btn-danger {
+  border-color: #ddd;
+  color: #cf8585;
+}
+
+.btn-danger:hover {
+  background: #cf8585;
+  color: #fff;
+  border-color: #b87575;
+}
+
+/* Progress */
+.progress-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #aaa;
+}
+
+.progress-bar {
+  height: 2px;
+  background: #eee;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #111;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* Card area */
+.card-area {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-card {
+  border: 1.5px dashed #ddd;
+  border-radius: 12px;
+  padding: 2.5rem;
+  text-align: center;
+  color: #bbb;
+  font-size: 14px;
+  width: 100%;
+}
+
+.empty-card strong {
+  color: #888;
+}
+
+/* Flip card */
+.flip-scene {
+  width: 100%;
+  perspective: 800px;
+  cursor: pointer;
+}
+
+.flip-card {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.flip-card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  background: #fff;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 2rem 2rem 1.5rem;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-face.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: rotateY(180deg);
+  background: #fafafa;
+}
+
+.card-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ccc;
+  margin-bottom: 0.75rem;
+}
+
+.card-text {
+  font-family: "DM Serif Display", serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #111;
+  line-height: 1.4;
+  min-height: 60px;
+  word-break: break-word;
+}
+
+.card-tip {
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 1.25rem;
+  text-align: right;
+}
+
+/* Plain item card */
+.plain-card {
+  background: #fff;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 2rem 2rem 1.5rem;
+  width: 100%;
+}
+
+/* Done card */
+.done-card {
+  background: #fff;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 2.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.done-check {
+  width: 36px;
+  height: 36px;
+  border: 2px solid #111;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+  font-size: 16px;
+}
+
+.done-title {
+  font-family: "DM Serif Display", serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #111;
+  margin-bottom: 0.4rem;
+}
+
+.done-sub {
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.controls button {
+  min-width: 90px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+}

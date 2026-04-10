@@ -25,26 +25,9 @@ start.addEventListener('click', function(){
     
 submit.addEventListener('click', insert);
 
-// function insert() {
-//     const inputValue = input.value;
-//     console.log(inputValue);
-
-//     let currentItem = JSON.parse(localStorage.getItem('items'));
-    
-//     if (currentItem != null){
-//         currentItem = [currentItem, inputValue]
-//     } else {
-//         currentItem = inputValue;
-//     }
-
-//     localStorage.setItem('items', JSON.stringify(currentItem));
-
-//     console.log(currentItem);
-// }
-
 reset.addEventListener('click', function(){
     console.log(localStorage.getItem('items'));
-    let reset = localStorage.removeItem('items');
+    localStorage.removeItem('items');
 });
 
 function insert() {
@@ -57,14 +40,11 @@ function insert() {
 
     currentItem = JSON.parse(localStorage.getItem('items'));
 
-    // If currentItem is not an array, initialize it as an empty one
-    if (!Array.isArray(currentItem)) {
-        currentItem = [];
-    }
+    console.log(currentItem);
 
-    currentItem.push(inputValue); // 👈 Add the new value to the end
+    const split = inputValue.split('|');
 
-    localStorage.setItem('items', JSON.stringify(currentItem));
+    localStorage.setItem('items', JSON.stringify(split));
 
     console.log(currentItem);
 

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Reviewer</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app">
+      <div class="header">
+        <span class="title">Quiz Reviewer</span>
+        <span class="badge" id="count-badge">0 items</span>
+      </div>
+
+      <div>
+        <div class="input-row">
+          <input type="text" id="input" placeholder="q | q  or  q::a | q::a" />
+          <button onclick="insert()">Add</button>
+        </div>
+        <p class="hint">
+          Separate items with <code>|</code>. Use <code>q::a</code> for
+          question/answer pairs.
+        </p>
+      </div>
+
+      <div class="progress-wrap" id="progress-wrap" style="display: none">
+        <div class="progress-meta">
+          <span id="prog-label">0 remaining</span>
+          <span id="prog-pct">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="prog-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="card-area" id="card-area">
+        <div class="empty-card">
+          Add items above, then press <strong>Start</strong>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="start-btn" onclick="startQuiz()">Start</button>
+        <button id="flip-btn" onclick="flipCard()" style="display: none">
+          Flip
+        </button>
+        <button id="next-btn" onclick="nextCard()" style="display: none">
+          Next
+        </button>
+        <button class="btn-danger" onclick="confirmReset()">Reset</button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </body>
+</html>
