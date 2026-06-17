@@ -5,23 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz Reviewer</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
   </head>
   <body>
     <div class="app">
+      <!-- Sets Panel (sidebar/drawer) -->
+      <div class="sets-panel" id="sets-panel">
+        <div class="sets-header">
+          <span class="sets-title">Sets</span>
+          <button
+            class="sets-close"
+            onclick="closeSetsPanel()"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="sets-list" id="sets-list"></div>
+        <div class="sets-new">
+          <input type="text" id="new-set-input" placeholder="New set name…" />
+          <button onclick="createSet()">Create</button>
+        </div>
+      </div>
+      <div
+        class="sets-overlay"
+        id="sets-overlay"
+        onclick="closeSetsPanel()"
+      ></div>
+
+      <!-- Main -->
       <div class="header">
-        <span class="title">Quiz Reviewer</span>
+        <div class="header-left">
+          <button
+            class="sets-btn"
+            onclick="openSetsPanel()"
+            title="Manage sets"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="1"
+                y="2"
+                width="14"
+                height="2"
+                rx="1"
+                fill="currentColor"
+              />
+              <rect
+                x="1"
+                y="7"
+                width="14"
+                height="2"
+                rx="1"
+                fill="currentColor"
+              />
+              <rect
+                x="1"
+                y="12"
+                width="14"
+                height="2"
+                rx="1"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <div>
+            <span class="title">Quiz Reviewer</span>
+            <span class="set-name-label" id="set-name-label"></span>
+          </div>
+        </div>
         <span class="badge" id="count-badge">0 items</span>
       </div>
 
       <div>
         <div class="input-row">
-          <input type="text" id="input" placeholder="d | d  or  t::d | t::d" />
+          <input
+            type="text"
+            id="input"
+            placeholder="term::definition  or  item | item"
+          />
           <button onclick="insert()">Add</button>
         </div>
         <p class="hint">
-          Separate items with <code>|</code>. Use <code>t::d</code> for
-          question/answer pairs.
+          Separate items with <code>|</code>. Use
+          <code>term::definition</code> for flashcard pairs.
         </p>
       </div>
 
@@ -35,6 +106,14 @@
         </div>
       </div>
 
+      <!-- Skipped banner -->
+      <div class="skipped-banner" id="skipped-banner" style="display: none">
+        <span id="skipped-count-label"></span>
+        <button class="skipped-review-btn" onclick="reviewSkipped()">
+          Review skipped
+        </button>
+      </div>
+
       <div class="card-area" id="card-area">
         <div class="empty-card">
           Add items above, then press <strong>Start</strong>
@@ -44,15 +123,20 @@
       <div class="controls">
         <button id="start-btn" onclick="startQuiz()">Start</button>
         <button id="next-btn" onclick="nextCard()" style="display: none">
-          Next
+          Next →
         </button>
         <button id="flip-btn" onclick="flipCard()" style="display: none">
           Flip
+        </button>
+        <button id="skip-btn" onclick="skipCard()" style="display: none">
+          Skip
         </button>
         <button class="btn-danger" onclick="confirmReset()">Reset</button>
       </div>
     </div>
 
     <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
   </body>
 </html>

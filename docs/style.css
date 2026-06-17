@@ -1,7 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Dynalight&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lobster&family=Markazi+Text:wght@400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,900;1,900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playball&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Shojumaru&family=Zain:ital,wght@0,200;0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&family=Lobster&display=swap");
 
 * {
-  -webkit-tap-highlight-color: transparent; /* Remove blue tap highlight on mobile */
+  -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -25,19 +25,206 @@ body {
   gap: 1.5rem;
 }
 
-/* Header */
+/* ── Sets Panel ── */
+.sets-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: #fff;
+  border-right: 1.5px solid #e8e8e8;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  z-index: 200;
+  transform: translateX(-100%);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.06);
+}
+
+.sets-panel.open {
+  transform: translateX(0);
+}
+
+.sets-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.18);
+  z-index: 199;
+}
+
+.sets-overlay.visible {
+  display: block;
+}
+
+.sets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1.5px solid #f0f0f0;
+}
+
+.sets-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+.sets-close {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #aaa;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+.sets-close:hover {
+  background: #f0f0f0;
+  color: #111;
+}
+
+.sets-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.set-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  gap: 0.5rem;
+  border-left: 3px solid transparent;
+  transition: background 0.12s;
+}
+
+.set-item:hover {
+  background: #f8f8f8;
+}
+
+.set-item.active {
+  background: #f4faff;
+  border-left-color: #111;
+}
+
+.set-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.set-item-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.set-item-count {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 1px;
+}
+
+.set-item-delete {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: 0.12s;
+  flex-shrink: 0;
+}
+
+.set-item-delete:hover {
+  color: #cf8585;
+  background: #fff0f0;
+}
+
+.sets-new {
+  padding: 1rem 1.25rem;
+  border-top: 1.5px solid #f0f0f0;
+  display: flex;
+  gap: 8px;
+}
+
+.sets-new input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: "DM Sans", sans-serif;
+  outline: none;
+  transition: 0.2s;
+}
+
+.sets-new input:focus {
+  border-color: #111;
+}
+
+.sets-new button {
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+/* ── Header ── */
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sets-btn {
+  padding: 8px 10px;
+  border: 1.5px solid #e8e8e8;
+  color: #666;
+  background: #fff;
+}
+
+.sets-btn:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
 }
 
 .title {
-  font-family: "Lobster", "DM Serif Display", serif;
-  font-size: 32px;
-  letter-spacing: 1px;
+  font-family: "Lobster", serif;
+  font-size: 28px;
+  letter-spacing: 0.5px;
   font-weight: 400;
   color: #111;
+  line-height: 1;
+}
+
+.set-name-label {
+  display: block;
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 2px;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+  min-height: 14px;
 }
 
 .badge {
@@ -47,9 +234,10 @@ body {
   padding: 3px 12px;
   border-radius: 999px;
   letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
-/* Input */
+/* ── Input ── */
 .input-row {
   display: flex;
   gap: 8px;
@@ -87,7 +275,7 @@ body {
   font-family: monospace;
 }
 
-/* Buttons */
+/* ── Buttons ── */
 button {
   padding: 10px 20px;
   border: 1.5px solid #ddd;
@@ -98,7 +286,10 @@ button {
   font-family: "DM Sans", sans-serif;
   font-weight: 500;
   cursor: pointer;
-  transition: 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
   letter-spacing: 0.01em;
 }
 
@@ -123,7 +314,20 @@ button:active {
   border-color: #b87575;
 }
 
-/* Progress */
+/* Skip button — amber accent */
+#skip-btn {
+  border-color: #e8c97a;
+  color: #a07820;
+  background: #fffbf0;
+}
+
+#skip-btn:hover {
+  background: #e8c97a;
+  color: #fff;
+  border-color: #d4ae50;
+}
+
+/* ── Progress ── */
 .progress-wrap {
   display: flex;
   flex-direction: column;
@@ -151,7 +355,37 @@ button:active {
   transition: width 0.4s ease;
 }
 
-/* Card area */
+/* ── Skipped Banner ── */
+.skipped-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fffbf0;
+  border: 1.5px solid #e8c97a;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 13px;
+  color: #a07820;
+  gap: 1rem;
+}
+
+.skipped-review-btn {
+  padding: 5px 12px;
+  font-size: 12px;
+  background: #e8c97a;
+  border: 1.5px solid #d4ae50;
+  color: #fff;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.skipped-review-btn:hover {
+  background: #d4ae50;
+  border-color: #b89430;
+  color: #fff;
+}
+
+/* ── Card area ── */
 .card-area {
   min-height: 200px;
   display: flex;
@@ -173,7 +407,7 @@ button:active {
   color: #888;
 }
 
-/* Flip card */
+/* ── Flip card ── */
 .flip-scene {
   width: 100%;
   perspective: 800px;
@@ -235,7 +469,28 @@ button:active {
   text-align: right;
 }
 
-/* Plain item card */
+/* Skipped card indicator */
+.card-face.is-skipped,
+.plain-card.is-skipped {
+  border-color: #e8c97a;
+  background: #fffdf5;
+}
+
+.skipped-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a07820;
+  background: #fff3cc;
+  border: 1px solid #e8c97a;
+  border-radius: 4px;
+  padding: 2px 7px;
+  margin-bottom: 0.6rem;
+}
+
+/* ── Plain item card ── */
 .plain-card {
   background: #fff;
   border: 1.5px solid #e8e8e8;
@@ -244,7 +499,7 @@ button:active {
   width: 100%;
 }
 
-/* Done card */
+/* ── Done card ── */
 .done-card {
   background: #fff;
   border: 1.5px solid #e8e8e8;
@@ -277,9 +532,18 @@ button:active {
 .done-sub {
   font-size: 13px;
   color: #aaa;
+  line-height: 1.6;
 }
 
-/* Controls */
+.done-skipped-cta {
+  margin-top: 1.25rem;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── Controls ── */
 .controls {
   display: flex;
   gap: 8px;
@@ -291,7 +555,7 @@ button:active {
   min-width: 90px;
 }
 
-/* Toast */
+/* ── Toast ── */
 .toast {
   position: fixed;
   bottom: 1.5rem;
@@ -306,6 +570,7 @@ button:active {
   transition: opacity 0.3s;
   pointer-events: none;
   white-space: nowrap;
+  z-index: 300;
 }
 
 .toast.show {
@@ -315,5 +580,13 @@ button:active {
 @media (max-width: 480px) {
   .card-text {
     font-size: 20px;
+  }
+  .controls {
+    gap: 6px;
+  }
+  .controls button {
+    min-width: 70px;
+    padding: 9px 12px;
+    font-size: 13px;
   }
 }
