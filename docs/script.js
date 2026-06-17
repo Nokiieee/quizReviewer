@@ -65,16 +65,58 @@ function renderSetsList() {
   list.innerHTML = sets
     .map(
       (s) => `
-    <div class="set-item ${s.id === activeSetId ? "active" : ""}" onclick="switchSet('${s.id}')">
+    <div class="set-item ${s.id === activeSetId ? "active" : ""}" id="set-row-${s.id}" onclick="switchSet('${s.id}')">
       <div class="set-item-info">
-        <div class="set-item-name">${esc(s.name)}</div>
+        <div class="set-item-name" id="set-name-${s.id}">${esc(s.name)}</div>
         <div class="set-item-count">${s.items.length} item${s.items.length !== 1 ? "s" : ""}</div>
       </div>
-      <button class="set-item-delete" onclick="deleteSet(event,'${s.id}')" title="Delete set">✕</button>
+      <div class="set-item-actions">
+        <button class="set-item-icon-btn" onclick="startRename(event,'${s.id}')" title="Rename">✎</button>
+        <button class="set-item-delete" onclick="deleteSet(event,'${s.id}')" title="Delete">✕</button>
+      </div>
     </div>
   `,
     )
     .join("");
+}
+
+function startRename(e, id) {
+  e.stopPropagation();
+  const nameEl = document.getElementById("set-name-" + id);
+  const set = sets.find((s) => s.id === id);
+  if (!set || nameEl.querySelector("input")) return;
+
+  const original = set.name;
+  nameEl.innerHTML = `<input class="rename-input" value="${esc(original)}" onclick="event.stopPropagation()" />`;
+  const input = nameEl.querySelector("input");
+  input.focus();
+  input.select();
+
+  let committed = false;
+  function commit() {
+    if (committed) return;
+    committed = true;
+    const val = input.value.trim();
+    if (val && val !== original) {
+      set.name = val;
+      saveSets();
+      updateSetNameLabel();
+      showToast('Renamed to "' + val + '"');
+    }
+    renderSetsList();
+  }
+
+  input.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter") {
+      ev.preventDefault();
+      commit();
+    }
+    if (ev.key === "Escape") {
+      committed = true;
+      renderSetsList();
+    }
+  });
+  input.addEventListener("blur", commit);
 }
 
 function switchSet(id) {
@@ -202,7 +244,6 @@ function nextCard() {
 
 function skipCard() {
   if (!currentItem) return;
-  // Put the raw string back
   const raw = currentItem.hasPair
     ? currentItem.question + "::" + currentItem.answer
     : currentItem.question;
@@ -222,13 +263,23 @@ function flipCard() {
 }
 
 // ── Skip review ───────────────────────────────────────────────
+let savedRemaining = [];
+let savedCurrentItem = null; // the main card showing when skip-review was opened
+let currentSkippedItem = null; // the skip-review card currently displayed on screen
+
 function reviewSkipped() {
   if (skipped.length === 0) {
     showToast("No skipped items");
     return;
   }
+  // Snapshot the current main card and remaining queue.
+  savedRemaining = [...remaining];
+  savedCurrentItem = currentItem;
+
+  // Put ALL skipped items into the queue — don't show one yet.
   skippedQueue = [...skipped].sort(() => Math.random() - 0.5);
   skipped = [];
+  currentSkippedItem = null;
   total = skippedQueue.length;
   remaining = [];
   reviewingSkipped = true;
@@ -237,21 +288,72 @@ function reviewSkipped() {
   show("next-btn", true);
   show("skip-btn", true);
   show("progress-wrap", true);
+  show("back-btn", true);
   updateProgress();
   updateSkippedBanner();
+  // Show the first skipped card via Next so it counts properly.
   showNextSkipped();
   showToast(
     "Reviewing " +
       skippedQueue.length +
+      1 +
       " skipped item" +
-      (skippedQueue.length !== 1 ? "s" : ""),
+      (skippedQueue.length + 1 !== 1 ? "s" : ""),
   );
+}
+
+function backToMain() {
+  // Put the currently displayed skip-review card back into skipped.
+  if (currentSkippedItem) {
+    const raw = currentSkippedItem.hasPair
+      ? currentSkippedItem.question + "::" + currentSkippedItem.answer
+      : currentSkippedItem.question;
+    skipped.push(raw);
+    currentSkippedItem = null;
+  }
+  // Also return all remaining unreviewed skipped cards.
+  skipped.push(...skippedQueue);
+  skippedQueue = [];
+  remaining = [...savedRemaining];
+  savedRemaining = [];
+
+  // Restore the main card that was on screen before skip-review.
+  currentItem = savedCurrentItem;
+  savedCurrentItem = null;
+
+  total = remaining.length + 1; // +1 for the restored currentItem
+  reviewingSkipped = false;
+  show("back-btn", false);
+  show("next-btn", true);
+  show("skip-btn", true);
+  updateProgress();
+  updateSkippedBanner();
+  renderCard(currentItem, false);
+  show("flip-btn", currentItem.hasPair);
+  showToast("Back to main quiz");
 }
 
 function showNextSkipped() {
   if (skippedQueue.length === 0) {
+    currentSkippedItem = null;
+    show("back-btn", false);
     if (skipped.length > 0) {
       showSkippedRound();
+    } else if (savedRemaining.length > 0 || savedCurrentItem) {
+      // Finished skip-review; restore the saved main card and queue
+      remaining = [...savedRemaining];
+      savedRemaining = [];
+      currentItem = savedCurrentItem;
+      savedCurrentItem = null;
+      total = remaining.length + 1;
+      reviewingSkipped = false;
+      show("next-btn", true);
+      show("skip-btn", true);
+      updateProgress();
+      updateSkippedBanner();
+      renderCard(currentItem, false);
+      show("flip-btn", currentItem.hasPair);
+      showToast("Back to main quiz");
     } else {
       showAllDone();
     }
@@ -259,6 +361,7 @@ function showNextSkipped() {
   }
   const idx = Math.floor(Math.random() * skippedQueue.length);
   currentItem = parseItem(skippedQueue[idx]);
+  currentSkippedItem = currentItem; // track what's on screen
   skippedQueue.splice(idx, 1);
   updateProgress();
   renderCard(currentItem, true);
@@ -266,7 +369,6 @@ function showNextSkipped() {
 }
 
 function showSkippedRound() {
-  // After a round of skip-review, some were skipped again
   document.getElementById("card-area").innerHTML = `
     <div class="done-card">
       <div class="done-check">↺</div>
@@ -282,6 +384,7 @@ function showSkippedRound() {
   show("flip-btn", false);
   show("next-btn", false);
   show("skip-btn", false);
+  show("back-btn", false);
   updateSkippedBanner();
 }
 
@@ -309,6 +412,7 @@ function showMainDone() {
   show("flip-btn", false);
   show("next-btn", false);
   show("skip-btn", false);
+  show("back-btn", false);
 }
 
 function showAllDone() {
@@ -322,12 +426,16 @@ function showAllDone() {
   show("flip-btn", false);
   show("next-btn", false);
   show("skip-btn", false);
+  show("back-btn", false);
   const startBtn = document.getElementById("start-btn");
   startBtn.textContent = "Start Again";
   show("start-btn", true);
   quizStarted = false;
   reviewingSkipped = false;
   skipped = [];
+  savedRemaining = [];
+  savedCurrentItem = null;
+  currentSkippedItem = null;
   updateSkippedBanner();
 }
 
@@ -419,6 +527,7 @@ function updateUI() {
   show("flip-btn", false);
   show("next-btn", false);
   show("skip-btn", false);
+  show("back-btn", false);
   const startBtn = document.getElementById("start-btn");
   startBtn.textContent = "Start";
   show("start-btn", true);
@@ -429,9 +538,12 @@ function updateUI() {
 
 function resetQuizState() {
   remaining = [];
+  savedRemaining = [];
+  savedCurrentItem = null;
   skipped = [];
   skippedQueue = [];
   currentItem = null;
+  currentSkippedItem = null;
   total = 0;
   quizStarted = false;
   reviewingSkipped = false;

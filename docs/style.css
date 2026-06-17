@@ -314,8 +314,53 @@ button:active {
   border-color: #b87575;
 }
 
-/* Skip button — amber accent */
-#skip-btn {
+.set-item-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.set-item-icon-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 5px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: 0.12s;
+}
+
+.set-item-icon-btn:hover {
+  color: #555;
+  background: #f0f0f0;
+}
+
+.rename-input {
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "DM Sans", sans-serif;
+  color: #111;
+  border: 1.5px solid #111;
+  border-radius: 5px;
+  padding: 2px 6px;
+  outline: none;
+  background: #fff;
+}
+
+/* Back to main button */
+#back-btn {
+  border-color: #c5d8f5;
+  color: #4a7abf;
+  background: #f0f6ff;
+}
+
+#back-btn:hover {
+  background: #4a7abf;
+  border-color: #3a68a8;
+  color: #fff;
   border-color: #e8c97a;
   color: #a07820;
   background: #fffbf0;
